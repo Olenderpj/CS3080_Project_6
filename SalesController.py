@@ -4,67 +4,67 @@ import re
 
 
 class SalesController(SaleModel):
-    fileRegex = "(?P<salesFile>sales)/(?P<purchaseYear>\d{4})/(?P<purchaseMonth>[A-z]+)/(?P<salesAssociateName>[A-z]+).txt"
+    FILE_REGEX = "(?P<salesFile>sales)/(?P<purchaseYear>\d{4})/(?P<purchaseMonth>[A-z]+)/(?P<salesAssociateName>[A-z]+).txt"
+    salesArray = []
+    def __int__(self):
+        self.filePath = ""
+        self.fileData = ""
+        self.purchaseMonth = 0
+        self.purchaseYear = 0
+        self.salesAssociate = ''
+        self.salesAssociates = set()
+        self.salesYears = set()
 
-    filePath = ""
-    fileData = ""
-    #salesArray = []
-    purchaseMonth = 0
-    purchaseYear = 0
-    salesAssociate = ''
-    salesAssociates = set()
-    salesYears = set()
 
-    def __int__(self, filePath):
-        self.filePath = filePath
-        self.fileData = open(filePath, "r")
-        self.createSale(self.fileData)
-        self.setSalesAssociate()
-        self.setPurchaseYear()
-        self.salesArray = []
+    def createSale(self, filePath):
+        sale = SaleModel()
 
-    def createSale(self, fileData):
 
-        for saleData in fileData:
-            saleData.split('|')
+        fileLines = open(filePath, "r")
 
-            sale = SaleModel()
-
-            setattr(sale, "make", saleData[0])
-            setattr(sale, "model", saleData[1])
-            setattr(sale, "modelYear", saleData[2])
-            setattr(sale, "vin", saleData[3])
-            setattr(sale, "salePrice", saleData[4])
-            setattr(sale, "purchasePrice", saleData[5])
-            setattr(sale, "purchaseYear", )
-            setattr(sale, "salesAssociate", )
-
+        for lineSale in fileLines:
+            saleLine = lineSale.split("|")
+            setattr(sale, "make", saleLine[0])
+            setattr(sale, "model", saleLine[1])
+            setattr(sale, "modelYear", saleLine[2])
+            setattr(sale, "vin", saleLine[3])
+            setattr(sale, "salePrice", saleLine[4])
+            setattr(sale, "purchasePrice", saleLine[5])
 
             self.salesArray.append(sale)
 
-    def setSalesAssociate(self):
-        if self.filePath is not None:
-            fileSearch = re.search(self.fileRegex, self.filePath)
-            self.salesAssociate = fileSearch.group('salesAssociateName')
 
-    def setPurchaseMonth(self):
-        if self.filePath is not None:
-            fileSearch = re.search(self.fileRegex, self.filePath)
-            self.purchaseMonth = fileSearch.group('purchaseMonth')
+ #   def setSalesAssociate(self):
+ #       if self.filePath is not None:
+ #           fileSearch = re.search(self.fileRegex, self.filePath)
+ #           self.salesAssociate = fileSearch.group('salesAssociateName')
+ #
+ #   def setPurchaseMonth(self):
+ #       if self.filePath is not None:
+ #           fileSearch = re.search(self.fileRegex, self.filePath)
+ #           self.purchaseMonth = fileSearch.group("purchaseMonth")
+ #
+ #   def setPurchaseYear(self):
+ #       if self.filePath is not None:
+ #           fileSearch = re.search(self.fileRegex, self.filePath)
+ #           self.purchaseYear = fileSearch.group('purchaseYear')
+ #
+ #   def getSalesArray(self):
+ #       return self.salesArray
+ #
+ #   # Compile the total Sales Information
+ #   def dealershipGrandTotalsToString(self):
+ #
+ #       for sale in self.salesArray:
+ #           rv = getattr(sale, "purchasePrice")
+ #           print(rv)
+ #
 
-    def setPurchaseYear(self):
-        if self.filePath is not None:
-            fileSearch = re.search(self.fileRegex, self.filePath)
-            self.purchaseYear = fileSearch.group('purchaseYear')
 
-    def getSalesArray(self):
-        return self.salesArray
 
-    # Compile the total Sales Information
-    def dealershipGrandTotalsToString(self):
 
-        for sale in self.salesArray:
-            getattr(sale, "purchasePrice")
+
+
 
 
 

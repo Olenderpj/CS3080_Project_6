@@ -8,15 +8,15 @@ class SalesView(SalesController):
 # Compile the total Sales Information
     def dealershipGrandTotalsToString(self):
 
-        for sale in self.salesArray:
-
         pass
 
     def getDealershipTotalCarsSold(self):
-        pass
+        return len(self.salesArray)
 
     def getDealershipTotalSales(self):
-        pass
+        totalSales = 0
+        for sale in self.salesArray:
+            totalSales += getattr(sale, "salePrice")
 
     def getDealershipTotalProfit(self):
         pass
