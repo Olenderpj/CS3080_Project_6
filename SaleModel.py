@@ -1,3 +1,7 @@
+"""@Author: PJ Olender
+    Description: Model of an individual sale for a singular car"""
+
+
 class SaleModel:
     def __init__(self, make, model, modelYear, vinNumber, salePrice, purchasePrice, purchaseMonth,
                  purchaseYear, salesAssociate):

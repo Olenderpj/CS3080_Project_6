@@ -1,3 +1,11 @@
+""" @Author: PJ Olender
+    Description: the sales controller has access to all of the sales model objects that will be stored in the sales array
+    and has logic built in to search every element and return the user selected information about either the individual
+    sale or the sales results as a whole"""
+
+import math
+
+
 class SalesController:
     MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
               'August', 'September', 'October', 'November', 'December']
@@ -23,9 +31,9 @@ class SalesController:
               "{2:25s}${3:16,.0f}\n"
               "{4:25s}${5:16,.0f}\n"
               "{6:25s}${7:16,.0f}\n".format("Total Nbr Sold", self.getDealershipTotalCarsSold(),
-                                            "Total Sales", self.getDealershipTotalSales(),
-                                            "Total Profit", self.getDealershipTotalProfit(),
-                                            "Ave Profit Per Car", self.getDealershipAverageProfitPerCar()))
+                                            "Total Sales", math.floor(self.getDealershipTotalSales()),
+                                            "Total Profit", math.floor(self.getDealershipTotalProfit()),
+                                            "Ave Profit Per Car", math.floor(self.getDealershipAverageProfitPerCar())))
 
     def getDealershipTotalCarsSold(self):
         return len(self.salesArray)
@@ -43,7 +51,10 @@ class SalesController:
         return totalProfit
 
     def getDealershipAverageProfitPerCar(self):
-        return self.getDealershipTotalProfit() / self.getDealershipTotalCarsSold()
+        if self.getDealershipTotalCarsSold() == 0:
+            return 0
+        else:
+            return self.getDealershipTotalProfit() / self.getDealershipTotalCarsSold()
 
     # Compile the annual Sales Information
     def getDealershipAnnualGrandTotalsToString(self):
@@ -54,9 +65,10 @@ class SalesController:
                   "{6:25s}${7:16,.0f}\n"
                   "{8:25s}${9:16,.0f}\n".format("Results for ", year,
                                                 "Annual Nbr Sold", self.getDealershipAnnualTotalCarsSold(year),
-                                                "Annual Sales", self.getDealershipAnnualTotalSales(year),
-                                                "Annual Profit", self.getDealershipAnnualTotalProfit(year),
-                                                "Ave Profit Per Car", self.getDealershipAnnualAverageProfitPerCar(year)
+                                                "Annual Sales", math.floor(self.getDealershipAnnualTotalSales(year)),
+                                                "Annual Profit", math.floor(self.getDealershipAnnualTotalProfit(year)),
+                                                "Ave Profit Per Car",
+                                                math.floor(self.getDealershipAnnualAverageProfitPerCar(year))
                                                 ))
 
     def getDealershipAnnualTotalCarsSold(self, year):
@@ -81,9 +93,12 @@ class SalesController:
         return totalAnnualProfit
 
     def getDealershipAnnualAverageProfitPerCar(self, year):
-        return self.getDealershipAnnualTotalProfit(year) / self.getDealershipAnnualTotalCarsSold(year)
+        if self.getDealershipAnnualTotalCarsSold(year) == 0:
+            return 0
+        else:
+            return self.getDealershipAnnualTotalProfit(year) / self.getDealershipAnnualTotalCarsSold(year)
 
-# Compile the Monthly Sales Information
+    # Compile the Monthly Sales Information
     def getDealershipGrandMonthlyTotalsToString(self):
         for year in self.purchaseYearArray:
             for month in self.MONTHS:
@@ -93,10 +108,14 @@ class SalesController:
                           "{5:25s}${6:16,.0f}\n"
                           "{7:25s}${8:16,.0f}\n"
                           "{9:25s}${10:16,.0f}\n".format("Results for", year, month,
-                                                         "Monthly Nbr Sold", self.getDealershipMonthlyTotalCarsSold(year, month,),
-                                                         "Monthly Sales", self.getDealershipMonthlyTotalSales(year, month,),
-                                                         "Monthly Profit", self.getDealershipMonthlyTotalProfit(year, month,),
-                                                         "Ave Profit Per Car", self.getDealershipMonthlyAverageProfitPerCar(year, month,)))
+                                                         "Monthly Nbr Sold",
+                                                         self.getDealershipMonthlyTotalCarsSold(year, month, ),
+                                                         "Monthly Sales",
+                                                         math.floor(self.getDealershipMonthlyTotalSales(year, month, )),
+                                                         "Monthly Profit", math.floor(
+                                                         self.getDealershipMonthlyTotalProfit(year, month, )),
+                                                         "Ave Profit Per Car", math.floor(
+                                                         self.getDealershipMonthlyAverageProfitPerCar(year, month, ))))
                 else:
                     pass
 
@@ -122,7 +141,10 @@ class SalesController:
         return monthTotalProfit
 
     def getDealershipMonthlyAverageProfitPerCar(self, year, month):
-        return self.getDealershipMonthlyTotalProfit(year, month) / self.getDealershipMonthlyTotalCarsSold(year, month)
+        if self.getDealershipMonthlyTotalCarsSold(year, month) == 0:
+            return 0
+        else:
+            return self.getDealershipMonthlyTotalProfit(year, month) / self.getDealershipMonthlyTotalCarsSold(year, month)
 
     def getSalesAssociateGrandMonthlyTotalSales(self):
         for year in self.purchaseYearArray:
@@ -138,15 +160,19 @@ class SalesController:
                                                               self.getSalesAssociateTotalCarsSoldPerMonth(year, month,
                                                                                                           salesAssociate),
                                                               "Salesperson Sales",
-                                                              self.getSalesAssociateTotalSalesPerMonth(year, month,
-                                                                                                       salesAssociate),
+                                                              math.floor(
+                                                                  self.getSalesAssociateTotalSalesPerMonth(year, month,
+                                                                                                           salesAssociate)),
                                                               "Salesperson Profit",
-                                                              self.getSalesAssociateTotalProfitPerMonth(year, month,
-                                                                                                        salesAssociate),
+                                                              math.floor(
+                                                                  self.getSalesAssociateTotalProfitPerMonth(year, month,
+                                                                                                            salesAssociate)),
                                                               "Ave Profit Per Car",
-                                                              self.getSalesAssociateAverageProfitPerCarPerMonth(year,
-                                                                                                                month,
-                                                                                                                salesAssociate)
+                                                              math.floor(
+                                                                  self.getSalesAssociateAverageProfitPerCarPerMonth(
+                                                                      year,
+                                                                      month,
+                                                                      salesAssociate))
                                                               ))
                     else:
                         pass
@@ -179,5 +205,8 @@ class SalesController:
         return totalProfitPerMonth
 
     def getSalesAssociateAverageProfitPerCarPerMonth(self, year, month, salesAssociate):
-        return self.getSalesAssociateTotalProfitPerMonth(year, month, salesAssociate) / \
-               self.getSalesAssociateTotalCarsSoldPerMonth(year, month, salesAssociate)
+        if self.getSalesAssociateTotalCarsSoldPerMonth(year, month, salesAssociate) == 0:
+            return 0
+        else:
+            return self.getSalesAssociateTotalProfitPerMonth(year, month, salesAssociate) / \
+                   self.getSalesAssociateTotalCarsSoldPerMonth(year, month, salesAssociate)
